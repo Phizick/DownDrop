@@ -122,6 +122,7 @@ function Dropdown({ options, placeholder, onSelect, label}: DropdownProps, ref: 
                         value={selectedOption ? selectedOption.label : ''}
                         placeholder={placeholder}
                         id="dropdown-input"
+                        defaultValue={''}
 
                     />
                     <svg
@@ -139,7 +140,7 @@ function Dropdown({ options, placeholder, onSelect, label}: DropdownProps, ref: 
                     <ul className={styles.dropdown_options}  tabIndex={0} >
                         {options.map((option, index) => (
                             <li
-                                key={option.value}
+                                key={index}
                                 className={`${styles.dropdown_option} ${
                                     selectedOption === option ? styles.selected : ''
                                 }`}

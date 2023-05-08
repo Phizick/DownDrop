@@ -16,7 +16,6 @@
     align-items: center;
     justify-content: space-between;
     padding: 12px;
-    font-weight: bold;
     color: #333;
     cursor: pointer;
     background: #FCFCFD;
@@ -46,7 +45,7 @@
     box-shadow: 0 64px 64px -48px rgba(31, 47, 70, 0.12);
     border-radius: 12px;
     overflow: auto;
-    height: 60vh;
+    max-height: 60vh;
 }
 
 .dropdown_options::-webkit-scrollbar {

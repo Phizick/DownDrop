@@ -2,10 +2,11 @@ import React, {useState, forwardRef, useImperativeHandle} from 'react';
 
 
 interface Props {
-    onStartTimeSelect: (time: string) => void;
-    onEndTimeSelect: (time: string) => void;
+    onStartTimeSelect: (time: string | undefined) => void;
+    onEndTimeSelect: (time: string | undefined) => void;
     onAllDayCheck: (isChecked: boolean) => void;
     required: boolean;
+
 }
 
 export interface TimeInputRef {
@@ -17,6 +18,8 @@ function TimeForm({ onStartTimeSelect, onEndTimeSelect, onAllDayCheck }: Props, 
     const [endTime, setEndTime] = useState<string>('');
     const [isAllDay, setIsAllDay] = useState<boolean>(false);
     const [isStartFocused, setIsStartFocused] = useState<boolean>(false);
+    const [isEndFocused, setIsEndFocused] = useState<boolean>(false);
+
 
     const formatTime = (input: string) => {
         const digitsOnly = input.replace(/\D/g, '');
@@ -50,7 +53,10 @@ function TimeForm({ onStartTimeSelect, onEndTimeSelect, onAllDayCheck }: Props, 
         setIsAllDay(isChecked);
         setStartTime(isChecked ? '09:00' : '');
         setEndTime(isChecked ? '17:00' : '');
+        onStartTimeSelect('09:00');
+        onEndTimeSelect('17:00');
         setIsStartFocused(false);
+        setIsEndFocused(false);
     };
 
     return (
@@ -65,9 +71,13 @@ function TimeForm({ onStartTimeSelect, onEndTimeSelect, onAllDayCheck }: Props, 
                 pattern="\d{1,2}:\d{2}"
                 maxLength={5}
                 value={formatTime(startTime)}
-                onChange={(e) => setStartTime(e.target.value)}
+                onChange={(e) => {
+                    setStartTime(e.target.value)
+                    onStartTimeSelect(e.target.value)
+                }}
                 onFocus={() => setIsStartFocused(true)}
                 onBlur={() => setIsStartFocused(false)}
+                defaultValue={''}
                 style={{
                     padding: '12px',
                     fontWeight: 'bold',
@@ -86,7 +96,7 @@ function TimeForm({ onStartTimeSelect, onEndTimeSelect, onAllDayCheck }: Props, 
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
                         setIsStartFocused(false);
-                        onStartTimeSelect(startTime);
+
                     }
                 }}
             />
@@ -101,7 +111,13 @@ function TimeForm({ onStartTimeSelect, onEndTimeSelect, onAllDayCheck }: Props, 
                 pattern="\d{1,2}:\d{2}"
                 maxLength={5}
                 value={formatTime(endTime)}
-                onChange={(e) => setEndTime(e.target.value)}
+                onChange={(e) => {
+                    setEndTime(e.target.value)
+                    onEndTimeSelect(e.target.value)
+                }}
+                onFocus={() => setIsEndFocused(true)}
+                onBlur={() => setIsEndFocused(false)}
+                defaultValue={''}
                 style={{
                     padding: '12px',
                     fontWeight: 'bold',
@@ -111,18 +127,19 @@ function TimeForm({ onStartTimeSelect, onEndTimeSelect, onAllDayCheck }: Props, 
                     borderRadius: '12px',
                     outline: 'none',
                     width: '70px',
-                    border: `2px solid ${'#E6E8EC'}`,
+                    border: `2px solid ${isEndFocused ? '#007AFF' : '#E6E8EC'}`,
                 }}
                 disabled={isAllDay}
                 onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        onEndTimeSelect(endTime);
+                        setIsEndFocused(false);
+
                     }
                 }}
             />
             </div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center'}}>
                 <div
                     style={{
                         width: 40,
@@ -136,7 +153,11 @@ function TimeForm({ onStartTimeSelect, onEndTimeSelect, onAllDayCheck }: Props, 
                         marginRight: '10px',
                         cursor: 'pointer'
                     }}
-                    onClick={() => handleAllDayChange(!isAllDay)}
+                    onClick={() => {
+                        handleAllDayChange(!isAllDay)
+                        onAllDayCheck(!isAllDay)
+
+                    }}
                 >
                     <div
                         style={{
@@ -154,9 +175,13 @@ function TimeForm({ onStartTimeSelect, onEndTimeSelect, onAllDayCheck }: Props, 
                     type="checkbox"
                     id="all-day"
                     checked={isAllDay}
-                    onChange={(e) => handleAllDayChange(e.target.checked)}
+                    onChange={(e) => {
+                        handleAllDayChange(e.target.checked)
+
+                    }}
                     style={{ display: 'none' }}
-                    tabIndex={0}
+                    tabIndex={1}
+                    defaultValue={''}
                 />
                 <label htmlFor="all-day">Весь день</label>
             <style>

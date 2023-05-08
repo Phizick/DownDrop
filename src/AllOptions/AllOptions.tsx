@@ -1,15 +1,21 @@
 import React, { useState, FormEvent, useRef } from 'react';
 import styles from './AllOptions.module.css';
-import { testArr } from '../list/array';
 import Dropdown from '../list/list';
 import DateInput from '../datePicker/datePicker';
 import TimeForm from '../timePicker/timePicker';
 import { Button } from '../button/button';
+import {FloorsArr} from "../Constants/Floors";
+import {TowersArr} from "../Constants/Towers";
+import {RoomsArr} from "../Constants/Rooms";
 
+interface IOption {
+    value: string;
+    label: string;
+}
 export const AllOptions = () => {
-    const [selectedTower, setSelectedTower] = useState('');
-    const [selectedFloor, setSelectedFloor] = useState('');
-    const [selectedRoom, setSelectedRoom] = useState('');
+    const [selectedTower, setSelectedTower] = useState<IOption>({value: '', label: ''});
+    const [selectedFloor, setSelectedFloor] = useState<IOption>({value: '', label: ''});
+    const [selectedRoom, setSelectedRoom] = useState<IOption>({value: '', label: ''});
     const [selectedDate, setSelectedDate] = useState('');
     const [selectedStartTime, setSelectedStartTime] = useState('');
     const [selectedEndTime, setSelectedEndTime] = useState('');
@@ -20,6 +26,8 @@ export const AllOptions = () => {
     const buildingPickerRef = useRef<any>(null);
     const floorPickerRef = useRef<any>(null);
     const roomPickerRef = useRef<any>(null);
+
+
 
     const handleTowerSelect = (option: any) => {
         setSelectedTower(option);
@@ -53,25 +61,27 @@ export const AllOptions = () => {
         setComment(event.target.value);
     }
 
+
     const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const timeObj = {
-            tower: selectedTower,
-            floor: selectedFloor,
-            room: selectedRoom,
+        const optionsObj = {
+            tower: selectedTower.value,
+            floor: selectedFloor.value,
+            room: selectedRoom.value,
             date: selectedDate,
             startTime: selectedStartTime,
             endTime: selectedEndTime,
             isAllDay: isAllDay,
             comment: comment
         };
-        console.log(JSON.stringify(timeObj));
+        console.log(JSON.stringify(optionsObj));
     };
 
     const handleFormReset = (e: FormEvent<HTMLFormElement>) => {
-        setSelectedTower('');
-        setSelectedFloor('');
-        setSelectedRoom('');
+        e.preventDefault();
+        setSelectedTower({value:'', label: ''});
+        setSelectedFloor({value:'', label: ''});
+        setSelectedRoom({value:'', label: ''});
         setSelectedDate('');
         setSelectedStartTime('');
         setSelectedEndTime('');
@@ -86,7 +96,6 @@ export const AllOptions = () => {
         document.querySelectorAll<HTMLInputElement>('input[type=text]').forEach((input) => {
             input.value = '';
         });
-        console.log(document.querySelectorAll<HTMLInputElement>('input[type=text]'))
     };
 
     const isFormValid = () => {
@@ -98,24 +107,24 @@ export const AllOptions = () => {
             <form className={styles.AllOptions__form} onSubmit={handleFormSubmit} onReset={handleFormReset}>
                 <div className={styles.AllOptions__FormLists}>
                     <Dropdown
-                        options={testArr}
-                        placeholder={'башня'}
+                        options={TowersArr}
+                        placeholder={'выберете башню'}
                         onSelect={handleTowerSelect}
                         label={'башня'}
                         required
                         ref={buildingPickerRef}
                     />
                     <Dropdown
-                        options={testArr}
-                        placeholder={'этаж'}
+                        options={FloorsArr}
+                        placeholder={'выберете этаж'}
                         onSelect={handleFloorSelect}
                         label={'этаж'}
                         required
                         ref={floorPickerRef}
                     />
                     <Dropdown
-                        options={testArr}
-                        placeholder={'комната'}
+                        options={RoomsArr}
+                        placeholder={'выберете комнату'}
                         onSelect={handleRoomSelect}
                         label={'комната'}
                         required
@@ -134,12 +143,21 @@ export const AllOptions = () => {
                 </div>
                 <div className={styles.AllOptions__commentField}>
                     <label>Комментарий:</label>
-                    <input className={styles.AllOptions__formComment} type="text" value={comment} onChange={handleCommentChange} required/>
+                    <input
+                        className={styles.AllOptions__formComment}
+                        type="text"
+                        value={comment || ''}
+                        onChange={handleCommentChange}
+                        required
+                        defaultValue={''}
+                    />
                 </div>
+                <div className={styles.AllOptions__formBtnContainer}>
                 <Button text={'отправить'} color={'blue'} disabled={!isFormValid} type={'submit'}/>
                 <Button text={'отмена'} color={'white'} type={'button'}/>
 
-                <button type="reset">clear</button>
+                <button className={styles.AllOptions__formClearBtn} type={"reset"}>очистить форму</button>
+                </div>
             </form>
         </div>
     );
