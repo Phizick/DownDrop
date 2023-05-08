@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, {useState, forwardRef, useImperativeHandle} from 'react';
+
 
 interface Props {
     onStartTimeSelect: (time: string) => void;
     onEndTimeSelect: (time: string) => void;
     onAllDayCheck: (isChecked: boolean) => void;
+    required: boolean;
 }
 
-const TimeForm: React.FC<Props> = ({ onStartTimeSelect, onEndTimeSelect, onAllDayCheck }) => {
+export interface TimeInputRef {
+    reset: () => void;
+}
+
+function TimeForm({ onStartTimeSelect, onEndTimeSelect, onAllDayCheck }: Props, ref: React.Ref<TimeInputRef>) {
     const [startTime, setStartTime] = useState<string>('');
     const [endTime, setEndTime] = useState<string>('');
     const [isAllDay, setIsAllDay] = useState<boolean>(false);
@@ -30,6 +36,16 @@ const TimeForm: React.FC<Props> = ({ onStartTimeSelect, onEndTimeSelect, onAllDa
         return formattedTime;
     };
 
+    const reset = () => {
+        setStartTime('');
+        setEndTime('');
+        setIsAllDay(false);
+    };
+
+    useImperativeHandle(ref, () => ({
+        reset,
+    }));
+
     const handleAllDayChange = (isChecked: boolean) => {
         setIsAllDay(isChecked);
         setStartTime(isChecked ? '09:00' : '');
@@ -38,6 +54,7 @@ const TimeForm: React.FC<Props> = ({ onStartTimeSelect, onEndTimeSelect, onAllDa
     };
 
     return (
+        <div style={{ display: "flex", flexDirection: "row"}}>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
             <label htmlFor="start-time" className="time__input-label">
                 начало:
@@ -73,6 +90,8 @@ const TimeForm: React.FC<Props> = ({ onStartTimeSelect, onEndTimeSelect, onAllDa
                     }
                 }}
             />
+        </div>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
             <label htmlFor="end-time" className="time__input-label">
                 конец:
             </label>
@@ -102,12 +121,44 @@ const TimeForm: React.FC<Props> = ({ onStartTimeSelect, onEndTimeSelect, onAllDa
                     }
                 }}
             />
-            <div style={{ display: 'flex', alignItems: 'center', marginTop: '5px' }}>
-                <input type="checkbox" id="all-day" checked={isAllDay} onChange={(e) => handleAllDayChange(e.target.checked)} />
-                <label htmlFor="all-day" style={{ marginLeft: '10px' }}>
-                    Весь день
-                </label>
             </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div
+                    style={{
+                        width: 40,
+                        height: 20,
+                        backgroundColor: isAllDay ? '#007AFF' : '#E6E8EC',
+                        borderRadius: 10,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: isAllDay ? 'flex-end' : 'flex-start',
+                        padding: 2,
+                        marginRight: '10px',
+                        cursor: 'pointer'
+                    }}
+                    onClick={() => handleAllDayChange(!isAllDay)}
+                >
+                    <div
+                        style={{
+                            width: 14,
+                            height: 14,
+                            backgroundColor: '#FFFFFF',
+                            borderRadius: '50%',
+                            transform: `translateX(${isAllDay ? '0px' :
+                                '0px'})`,
+                            transition: 'transform 2s',
+                        }}
+                    />
+                </div>
+                <input
+                    type="checkbox"
+                    id="all-day"
+                    checked={isAllDay}
+                    onChange={(e) => handleAllDayChange(e.target.checked)}
+                    style={{ display: 'none' }}
+                    tabIndex={0}
+                />
+                <label htmlFor="all-day">Весь день</label>
             <style>
                 {`
           .time__input-label {
@@ -122,7 +173,9 @@ ht: 700;
         `}
             </style>
         </div>
-    );
-};
+        </div>
 
-export default TimeForm;
+    );
+}
+
+export default forwardRef(TimeForm);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useImperativeHandle, forwardRef} from 'react';
 import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -6,12 +6,26 @@ interface Props extends Omit<ReactDatePickerProps, 'onChange'> {
     onSelect: (date: Date | null) => void;
 }
 
-function DateInput(props: Props) {
+export interface DateInputRef {
+    reset: () => void;
+}
+
+function DateInput(props: Props, ref: React.Ref<DateInputRef>) {
     const [startDate, setStartDate] = useState<Date | null>(null);
+
     const onSelect = (date: Date | null) => {
         setStartDate(date);
         props.onSelect(date);
     };
+
+    const reset = () => {
+        setStartDate(null);
+    };
+
+    useImperativeHandle(ref, () => ({
+        reset,
+    }));
+
     return (
         <div className="datePicker">
             <label className="datePicker__label" htmlFor="datepicker">
@@ -71,4 +85,4 @@ function DateInput(props: Props) {
     );
 }
 
-export default DateInput;
+export default forwardRef(DateInput);

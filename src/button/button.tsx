@@ -4,21 +4,22 @@ import ButtonStyles from './Button.module.css'
 
 interface IButtonProps extends React.HTMLProps<HTMLButtonElement> {
     text: string,
-    type: 'blue' | 'white'
+    color: 'blue' | 'white'
     extraClass?: string,
-    img?: string
+    img?: string,
+    type:  "button" | "reset" | "submit" | undefined
 }
 
 export const Button: React.FC<IButtonProps> = ({
                                                    text,
                                                    extraClass = '',
-                                                   type = 'blue',
+                                                   color = 'blue',
                                                    img= '',
                                                    ...rest
                                                }) => {
 
-    const className = type === 'blue' ? `${ButtonStyles.buttonBlue} ${extraClass}` : `${ButtonStyles.buttonWhite} ${extraClass}`
-    const textClassName = type === 'blue' ? `${ButtonStyles.textBlue}` : `${ButtonStyles.textWhite}`
+    const className = color === 'blue' ? `${ButtonStyles.buttonBlue} ${extraClass}` : `${ButtonStyles.buttonWhite} ${extraClass}`
+    const textClassName = color === 'blue' ? `${ButtonStyles.textBlue}` : `${ButtonStyles.textWhite}`
 
     return (
         <button

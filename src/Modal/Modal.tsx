@@ -25,7 +25,7 @@ const Modal  = (props: any) => {
     return ReactDOM.createPortal (
         <ModalOverlay closeModal={props.closeModal} isActive={true}>
             <div className={`${stylesModal.modal} pt-10 pb-10 pl-10 pr-10`}>
-                <div className={`${stylesModal.header}`}>
+                <div className={`${stylesModal.header}`}>Бронируем
 
                     <div className={stylesModal.closeIcon} onClick={props.closeModal}>
 

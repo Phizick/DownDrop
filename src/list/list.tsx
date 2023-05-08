@@ -1,5 +1,6 @@
-import { useState, FC, KeyboardEvent, useRef } from 'react';
+import React, {useState, FC, KeyboardEvent, useRef, useImperativeHandle, forwardRef} from 'react';
 import styles from './list.module.css';
+import {DateInputRef} from "../datePicker/datePicker";
 
 interface DropdownOption {
     label: string;
@@ -11,10 +12,14 @@ interface DropdownProps {
     placeholder: string;
     onSelect: (option: DropdownOption | null) => void;
     label: string;
-
+    required: boolean;
 }
 
-const Dropdown: FC<DropdownProps> = ({ options, placeholder, onSelect, label}) => {
+export interface DropdownInputRef {
+    reset: () => void;
+}
+
+function Dropdown({ options, placeholder, onSelect, label}: DropdownProps, ref: React.Ref<DropdownInputRef>) {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState<DropdownOption | null>(
         options.find((option) => option.value === '') || null
@@ -33,6 +38,14 @@ const Dropdown: FC<DropdownProps> = ({ options, placeholder, onSelect, label}) =
             optionNode?.classList.add('selected');
         }
     };
+
+    const reset = () => {
+        setSelectedOption(null);
+    };
+
+    useImperativeHandle(ref, () => ({
+        reset,
+    }));
 
 
     const handleOptionClick = (index: number) => {
@@ -105,7 +118,7 @@ const Dropdown: FC<DropdownProps> = ({ options, placeholder, onSelect, label}) =
 
                     <input
                         className={styles.dropdown_input}
-                        type='text'
+                        type="text"
                         value={selectedOption ? selectedOption.label : ''}
                         placeholder={placeholder}
                         id="dropdown-input"
@@ -145,4 +158,4 @@ const Dropdown: FC<DropdownProps> = ({ options, placeholder, onSelect, label}) =
     );
 };
 
-export default Dropdown;
+export default forwardRef(Dropdown);

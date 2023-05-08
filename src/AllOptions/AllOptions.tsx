@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FormEvent, useRef } from 'react';
 import styles from './AllOptions.module.css';
 import { testArr } from '../list/array';
 import Dropdown from '../list/list';
@@ -7,7 +7,6 @@ import TimeForm from '../timePicker/timePicker';
 import { Button } from '../button/button';
 
 export const AllOptions = () => {
-
     const [selectedTower, setSelectedTower] = useState('');
     const [selectedFloor, setSelectedFloor] = useState('');
     const [selectedRoom, setSelectedRoom] = useState('');
@@ -15,6 +14,12 @@ export const AllOptions = () => {
     const [selectedStartTime, setSelectedStartTime] = useState('');
     const [selectedEndTime, setSelectedEndTime] = useState('');
     const [isAllDay, setIsAllDay] = useState(false);
+    const [comment, setComment] = useState('');
+    const datePickerRef = useRef<any>(null);
+    const timePickerRef = useRef<any>(null);
+    const buildingPickerRef = useRef<any>(null);
+    const floorPickerRef = useRef<any>(null);
+    const roomPickerRef = useRef<any>(null);
 
     const handleTowerSelect = (option: any) => {
         setSelectedTower(option);
@@ -40,11 +45,15 @@ export const AllOptions = () => {
         setSelectedEndTime(time);
     };
 
-    const handleAllDayCheck = (e: any) => {
-        setIsAllDay(e.target.checked);
+    const handleAllDayCheck = (time: any) => {
+        setIsAllDay(time);
     };
 
-    const handleFormSubmit = (e: any) => {
+    const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setComment(event.target.value);
+    }
+
+    const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const timeObj = {
             tower: selectedTower,
@@ -54,44 +63,83 @@ export const AllOptions = () => {
             startTime: selectedStartTime,
             endTime: selectedEndTime,
             isAllDay: isAllDay,
+            comment: comment
         };
         console.log(JSON.stringify(timeObj));
     };
 
+    const handleFormReset = (e: FormEvent<HTMLFormElement>) => {
+        setSelectedTower('');
+        setSelectedFloor('');
+        setSelectedRoom('');
+        setSelectedDate('');
+        setSelectedStartTime('');
+        setSelectedEndTime('');
+        setIsAllDay(false);
+        setComment('');
+        datePickerRef.current?.reset();
+        timePickerRef.current?.reset();
+        buildingPickerRef.current?.reset();
+        floorPickerRef.current?.reset();
+        roomPickerRef.current?.reset()
+
+        document.querySelectorAll<HTMLInputElement>('input[type=text]').forEach((input) => {
+            input.value = '';
+        });
+        console.log(document.querySelectorAll<HTMLInputElement>('input[type=text]'))
+    };
+
+    const isFormValid = () => {
+        return !!selectedTower && !!selectedFloor && !!selectedRoom && !!selectedDate && !!selectedStartTime && !!selectedEndTime;
+    }
+
     return (
         <div className={styles.AllOptions__container}>
-            <h1 className={styles.AllOptions__header}></h1>
-            <form className={styles.AllOptions__form} onSubmit={handleFormSubmit}>
+            <form className={styles.AllOptions__form} onSubmit={handleFormSubmit} onReset={handleFormReset}>
                 <div className={styles.AllOptions__FormLists}>
                     <Dropdown
                         options={testArr}
                         placeholder={'башня'}
                         onSelect={handleTowerSelect}
                         label={'башня'}
+                        required
+                        ref={buildingPickerRef}
                     />
                     <Dropdown
                         options={testArr}
                         placeholder={'этаж'}
                         onSelect={handleFloorSelect}
                         label={'этаж'}
+                        required
+                        ref={floorPickerRef}
                     />
                     <Dropdown
                         options={testArr}
                         placeholder={'комната'}
                         onSelect={handleRoomSelect}
                         label={'комната'}
+                        required
+                        ref={roomPickerRef}
                     />
                 </div>
                 <div className={styles.AllOptions__formInputs}>
-                    <DateInput onSelect={handleDateSelect} />
+                    <DateInput onSelect={handleDateSelect} required ref={datePickerRef}/>
                     <TimeForm
                         onStartTimeSelect={handleStartTimeSelect}
                         onEndTimeSelect={handleEndTimeSelect}
                         onAllDayCheck={handleAllDayCheck}
+                        required
+                        ref={timePickerRef}
                     />
                 </div>
-                <Button text={'отправить'} type={'blue'} />
-                <Button text={'отмена'} type={'white'} />
+                <div className={styles.AllOptions__commentField}>
+                    <label>Комментарий:</label>
+                    <input className={styles.AllOptions__formComment} type="text" value={comment} onChange={handleCommentChange} required/>
+                </div>
+                <Button text={'отправить'} color={'blue'} disabled={!isFormValid} type={'submit'}/>
+                <Button text={'отмена'} color={'white'} type={'button'}/>
+
+                <button type="reset">clear</button>
             </form>
         </div>
     );
