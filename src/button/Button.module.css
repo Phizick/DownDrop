@@ -1,0 +1,68 @@
+.buttonBlue {
+    border-radius: 90px;
+    padding: 10px 16px;
+    background-color: rgba(55, 114, 255, 1);
+    height: 40px;
+    border: 2px solid transparent;
+    max-width: 352px;
+    transition: .5s;
+    cursor: pointer;
+}
+
+.buttonBlue:hover {
+    background-color: rgba(255,255,255, 1);
+    border: 2px solid rgba(230, 232, 236, .8);
+}
+
+.buttonBlue:hover .textBlue {
+    color: rgba(35, 38, 47, 1);
+}
+
+.buttonWhite {
+    border-radius: 90px;
+    padding: 10px 16px;
+    background-color: rgba(255,255,255, 1);
+    height: 40px;
+    border: 2px solid rgba(230, 232, 236, .8);
+    max-width: 352px;
+    transition: .5s;
+    cursor: pointer;
+}
+
+.buttonWhite:hover {
+    background-color: rgba(55, 114, 255, 1);
+    border: 2px solid transparent;
+}
+
+.buttonWhite:hover .textWhite {
+    color: rgba(252, 252, 253, 1);
+}
+
+.textBlue {
+    margin: 0;
+    color: rgba(252, 252, 253, 1);
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Droid Sans Mono', sans-serif;
+    transition: .3s;
+}
+
+.textWhite {
+    margin: 0;
+    color: rgba(35, 38, 47, 1);
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Droid Sans Mono', sans-serif;
+    transition: .3s;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.img {
+    padding-right: 15px;
+}
