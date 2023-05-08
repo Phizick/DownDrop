@@ -1,0 +1,20 @@
+.AllOptions__container {
+    display: flex;
+    flex-direction: row;
+}
+
+.AllOptions__form {
+    display: flex;
+    flex-direction: column;
+}
+
+.AllOptions__FormLists {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 30px;
+}
+
+.AllOptions__formInputs {
+    display: flex;
+    flex-direction: row;
+}

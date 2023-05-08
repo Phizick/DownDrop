@@ -10,9 +10,11 @@ interface DropdownProps {
     options: DropdownOption[];
     placeholder: string;
     onSelect: (option: DropdownOption | null) => void;
+    label: string;
+
 }
 
-const Dropdown: FC<DropdownProps> = ({ options, placeholder, onSelect }) => {
+const Dropdown: FC<DropdownProps> = ({ options, placeholder, onSelect, label}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState<DropdownOption | null>(
         options.find((option) => option.value === '') || null
@@ -70,26 +72,6 @@ const Dropdown: FC<DropdownProps> = ({ options, placeholder, onSelect }) => {
         }
     };
 
-    // function scrollListWithArrows(event: KeyboardEvent<HTMLUListElement>) {
-    //     const list = event.currentTarget;
-    //     const firstChild = list.firstChild as HTMLElement;
-    //     const lastChild = list.lastChild as HTMLElement;
-    //     const current = document.activeElement as HTMLElement;
-    //
-    //     if (event.key === 'ArrowUp') {
-    //         if (current === firstChild) {
-    //             lastChild.focus();
-    //             event.preventDefault();
-    //         }
-    //     } else if (event.key === 'ArrowDown') {
-    //         if (current === lastChild) {
-    //             firstChild.focus();
-    //             event.preventDefault();
-    //         }
-    //     }
-    // }
-
-
     const handleBlur = () => {
         if (!mouseDownRef.current) {
             setIsOpen(false);
@@ -106,11 +88,13 @@ const Dropdown: FC<DropdownProps> = ({ options, placeholder, onSelect }) => {
 
     return (
         <>
+
             <div
                 className={`${styles.dropdown_container} ${isOpen ? styles.active : ''}`}
                 onBlur={handleBlur}
                 ref={dropdownRef}
             >
+                <label className={styles.dropdown_label} htmlFor="dropdown-input">{label}</label>
                 <div
                     className={`${styles.dropdown_header} ${isOpen ? styles.active : ''}`}
                     onClick={() => setIsOpen(!isOpen)}
@@ -118,11 +102,13 @@ const Dropdown: FC<DropdownProps> = ({ options, placeholder, onSelect }) => {
                     onMouseDown={handleMouseDown}
                     tabIndex={0}
                 >
+
                     <input
                         className={styles.dropdown_input}
                         type='text'
                         value={selectedOption ? selectedOption.label : ''}
                         placeholder={placeholder}
+                        id="dropdown-input"
 
                     />
                     <svg
