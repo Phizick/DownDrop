@@ -18,7 +18,7 @@ interface IDropdownProps {
 export interface IDropdownInputRef {
     reset: () => void;
 }
-
+//компонент выпадающего списка
 function Dropdown({ options, placeholder, onSelect, label}: IDropdownProps, ref: React.Ref<IDropdownInputRef>) {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState<IDropdownOption | null>(
@@ -29,7 +29,7 @@ function Dropdown({ options, placeholder, onSelect, label}: IDropdownProps, ref:
 
 
     const highlightOption = (index: number) => {
-        const optionsNodes = dropdownRef.current?.querySelectorAll('.dropdown_option');
+        const optionsNodes = dropdownRef.current?.querySelectorAll('.dropdown__option');
         if (optionsNodes) {
             optionsNodes.forEach((node) => {
                 node?.classList.remove('selected');
@@ -57,6 +57,7 @@ function Dropdown({ options, placeholder, onSelect, label}: IDropdownProps, ref:
         highlightOption(index);
     };
 
+    //обработчик навигации при помощи клавиатуры
     const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
         if (event.key === 'Enter') {
             setIsOpen(!isOpen);

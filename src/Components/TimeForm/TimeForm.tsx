@@ -11,7 +11,7 @@ interface IProps {
 export interface ITimeInputRef {
     reset: () => void;
 }
-
+//форма для выставления временного интервала
 function TimeForm({ onStartTimeSelect, onEndTimeSelect, onAllDayCheck }: IProps, ref: React.Ref<ITimeInputRef>) {
     const [startTime, setStartTime] = useState<string>('');
     const [endTime, setEndTime] = useState<string>('');
@@ -49,15 +49,6 @@ function TimeForm({ onStartTimeSelect, onEndTimeSelect, onAllDayCheck }: IProps,
         reset,
     }));
 
-    // const handleStartTimeChange = (newStartTime: string) => {
-    //     setInvalidInput(false);
-    //     setStartTime(newStartTime);
-    //     onStartTimeSelect(newStartTime);
-    //     if (newStartTime >= endTime) {
-    //         setEndTime("");
-    //     }
-    // };
-
     const handleStartTimeChange = (newStartTime: string) => {
         setInvalidInput(false);
         setStartTime(newStartTime);
@@ -68,14 +59,6 @@ function TimeForm({ onStartTimeSelect, onEndTimeSelect, onAllDayCheck }: IProps,
             onEndTimeSelect(newEndTime);
         }
     };
-
-    // const handleEndTimeChange = (newEndTime: string) => {
-    //     setInvalidInput(false);
-    //     if (newEndTime >= startTime) {
-    //         setEndTime(newEndTime);
-    //         onEndTimeSelect(newEndTime);
-    //     }
-    // };
 
     const handleEndTimeInput = (newEndTime: string) => {
         if (newEndTime === startTime) {

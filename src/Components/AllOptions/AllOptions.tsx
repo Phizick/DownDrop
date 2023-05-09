@@ -1,5 +1,4 @@
 import React, { useState, FormEvent, useRef, FC } from 'react';
-import styles from './AllOptions.module.css'
 import Dropdown from '../Dropdown/Dropdown';
 import DateInput from '../DateInput/DateInput';
 import TimeForm from '../TimeForm/TimeForm';
@@ -7,6 +6,7 @@ import { Button } from '../Button/Button';
 import {FloorsArr} from "../../Constants/Floors";
 import {TowersArr} from "../../Constants/Towers";
 import {RoomsArr} from "../../Constants/Rooms";
+import styles from './AllOptions.module.css'
 
 interface IOption {
     value: string;

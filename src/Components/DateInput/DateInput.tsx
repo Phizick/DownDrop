@@ -10,6 +10,7 @@ export interface IDateInputRef {
     reset: () => void;
 }
 
+//date-picker из коробки
 function DateInput(props: IProps, ref: React.Ref<IDateInputRef>) {
     const [startDate, setStartDate] = useState<Date | null>(null);
 
