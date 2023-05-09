@@ -1,0 +1,74 @@
+.timeForm__mainContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+@media screen and (max-width: 400px) {
+    .timeForm__mainContainer {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+}
+
+.timeForm__inputContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.timeForm__input {
+    padding: 12px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    background: #fcfcfd;
+    border-radius: 12px;
+    outline: none;
+    margin-right: 10px;
+    width: 70px;
+    border: 2px solid #e6e8ec;
+}
+
+.timeForm__input_active {
+    border: 2px solid #007aff;
+}
+
+.timeForm__inputLabel {
+    color: #B1B5C4;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 12px;
+    margin-left: 7px;
+    margin-bottom: 7px;
+}
+
+.timeForm__inputCheckbox {
+    width: 40px;
+    height: 20px;
+    background-color: #e6e8ec;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 2px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.timeForm__inputCheckbox_active {
+    background-color: #007aff;
+    justify-content: flex-end;
+}
+
+.timeForm__inputCheckboxCircle {
+    width: 14px;
+    height: 14px;
+    background-color: #FFFFFF;
+    border-radius: 50%;
+    transform: translateX(0px);
+    transition: transform 2s;
+}
+
+.timeForm__inputCheckboxContainer {
+    display: flex;
+    align-items: center;
+}

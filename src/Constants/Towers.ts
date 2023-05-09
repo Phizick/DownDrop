@@ -1,9 +1,9 @@
-interface Tower {
+interface ITower {
     value: string;
     label: string;
 }
 
-export const TowersArr: Tower[] = [
+export const TowersArr: ITower[] = [
     {
         value: 'Башня A',
         label: 'Башня A',

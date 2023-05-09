@@ -1,27 +1,27 @@
-import React, {useState, FC, KeyboardEvent, useRef, useImperativeHandle, forwardRef} from 'react';
-import styles from './list.module.css';
-import {DateInputRef} from "../datePicker/datePicker";
+import React, {useState, KeyboardEvent, useRef, useImperativeHandle, forwardRef} from 'react';
+import styles from './Dropdown.module.css';
 
-interface DropdownOption {
+
+interface IDropdownOption {
     label: string;
-    value: string;
+    value: string  | number;
 }
 
-interface DropdownProps {
-    options: DropdownOption[];
+interface IDropdownProps {
+    options: IDropdownOption[];
     placeholder: string;
-    onSelect: (option: DropdownOption | null) => void;
+    onSelect: (option: IDropdownOption | null) => void;
     label: string;
     required: boolean;
 }
 
-export interface DropdownInputRef {
+export interface IDropdownInputRef {
     reset: () => void;
 }
 
-function Dropdown({ options, placeholder, onSelect, label}: DropdownProps, ref: React.Ref<DropdownInputRef>) {
+function Dropdown({ options, placeholder, onSelect, label}: IDropdownProps, ref: React.Ref<IDropdownInputRef>) {
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState<DropdownOption | null>(
+    const [selectedOption, setSelectedOption] = useState<IDropdownOption | null>(
         options.find((option) => option.value === '') || null
     );
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -98,57 +98,41 @@ function Dropdown({ options, placeholder, onSelect, label}: DropdownProps, ref: 
         }, 0);
     };
 
-
     return (
         <>
-
-            <div
-                className={`${styles.dropdown_container} ${isOpen ? styles.active : ''}`}
-                onBlur={handleBlur}
-                ref={dropdownRef}
-            >
-                <label className={styles.dropdown_label} htmlFor="dropdown-input">{label}</label>
-                <div
-                    className={`${styles.dropdown_header} ${isOpen ? styles.active : ''}`}
-                    onClick={() => setIsOpen(!isOpen)}
-                    onKeyDown={handleKeyDown}
-                    onMouseDown={handleMouseDown}
-                    tabIndex={0}
+            <div className={`${styles.dropdown__container} ${isOpen ? styles.active : ''}`}
+                 onBlur={handleBlur}
+                 ref={dropdownRef}>
+                <label className={styles.dropdown__label} htmlFor="dropdown-input">
+                    {label}
+                </label>
+                <div className={`${styles.dropdown__header} ${isOpen ? styles.active : ''}`}
+                     onClick={() => setIsOpen(!isOpen)}
+                     onKeyDown={handleKeyDown}
+                     onMouseDown={handleMouseDown}
+                     tabIndex={0}
                 >
-
                     <input
-                        className={styles.dropdown_input}
+                        className={styles.dropdown__input}
                         type="text"
                         value={selectedOption ? selectedOption.label : ''}
                         placeholder={placeholder}
                         id="dropdown-input"
-                        defaultValue={''}
-
+                        readOnly
                     />
-                    <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        viewBox='0 0 24 24'
-                        fill='currentColor'
-                        width='18px'
-                        height='18px'
-                    >
-                        <path d='M24 24H0V0h24v24z' fill='none' opacity='.87' />
-                        <path d='M7 10l5 5 5-5z' />
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18px" height="18px">
+                        <path d="M24 24H0V0h24v24z" fill="none" opacity=".87" />
+                        <path d="M7 10l5 5 5-5z" />
                     </svg>
                 </div>
                 {isOpen && (
-                    <ul className={styles.dropdown_options}  tabIndex={0} >
+                    <ul className={styles.dropdown__options} tabIndex={0}>
                         {options.map((option, index) => (
-                            <li
-                                key={index}
-                                className={`${styles.dropdown_option} ${
-                                    selectedOption === option ? styles.selected : ''
-                                }`}
+                            <li key={index}
+                                className={`${styles.dropdown__option} ${selectedOption === option ? styles.selected : ""}`}
                                 onMouseDown={handleMouseDown}
                                 onClick={() => handleOptionClick(index)}
-                                tabIndex={-1
-                                }
-                            >
+                                tabIndex={-1}>
                                 {option.label}
                             </li>
                         ))}
@@ -157,6 +141,6 @@ function Dropdown({ options, placeholder, onSelect, label}: DropdownProps, ref: 
             </div>
         </>
     );
-};
+}
 
 export default forwardRef(Dropdown);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import ButtonStyles from './Button.module.css'
 
 
@@ -7,16 +7,18 @@ interface IButtonProps extends React.HTMLProps<HTMLButtonElement> {
     color: 'blue' | 'white'
     extraClass?: string,
     img?: string,
-    type:  "button" | "reset" | "submit" | undefined
+    type:  "button" | "reset" | "submit" | undefined,
+    disabled?: boolean
 }
 
-export const Button: React.FC<IButtonProps> = ({
-                                                   text,
-                                                   extraClass = '',
-                                                   color = 'blue',
-                                                   img= '',
-                                                   ...rest
-                                               }) => {
+export const Button: FC<IButtonProps> = ({
+    text,
+    extraClass = '',
+    color = 'blue',
+    img= '',
+    disabled= false,
+    ...rest
+}) => {
 
     const className = color === 'blue' ? `${ButtonStyles.buttonBlue} ${extraClass}` : `${ButtonStyles.buttonWhite} ${extraClass}`
     const textClassName = color === 'blue' ? `${ButtonStyles.textBlue}` : `${ButtonStyles.textWhite}`
@@ -24,6 +26,7 @@ export const Button: React.FC<IButtonProps> = ({
     return (
         <button
             className={img !== '' ? `${className} ${ButtonStyles.container}` : `${className}`}
+            disabled={disabled}
             {...rest}
         >
             {img !== '' &&
@@ -32,4 +35,4 @@ export const Button: React.FC<IButtonProps> = ({
             <p className={textClassName}>{text}</p>
         </button>
     )
-}
+};

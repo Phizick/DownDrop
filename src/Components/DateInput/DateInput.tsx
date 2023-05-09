@@ -2,15 +2,15 @@ import React, { useState, useImperativeHandle, forwardRef} from 'react';
 import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-interface Props extends Omit<ReactDatePickerProps, 'onChange'> {
+interface IProps extends Omit<ReactDatePickerProps, 'onChange'> {
     onSelect: (date: Date | null) => void;
 }
 
-export interface DateInputRef {
+export interface IDateInputRef {
     reset: () => void;
 }
 
-function DateInput(props: Props, ref: React.Ref<DateInputRef>) {
+function DateInput(props: IProps, ref: React.Ref<IDateInputRef>) {
     const [startDate, setStartDate] = useState<Date | null>(null);
 
     const onSelect = (date: Date | null) => {
